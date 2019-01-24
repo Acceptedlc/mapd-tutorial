@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ning Bo Demo</title>
+    <script src='http://temp-lichao.oss-cn-beijing.aliyuncs.com/mapbox-gl.js'></script>
+    <link href='http://temp-lichao.oss-cn-beijing.aliyuncs.com/mapbox-gl.css' rel='stylesheet'/>
+
+
+    <style>
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .up {
+            width: 100%;
+            float: left;
+        }
+
+        .down {
+            width: 100%;
+            float: right;
+            background: yellowgreen;
+        }
+
+        .map {
+            width: 1024px;
+            height: 680px;
+        }
+
+    </style>
+</head>
+<body style="margin: 0;padding: 0">
+
+<div class="container">
+    <div class="up">
+        <div id="map" class="map"></div>
+    </div>
+    <div class="down">
+        <span id="data" style="position:absolute; left:0; up:0"></span>
+        <span id="info" style="position:absolute; left:0; bottom:0"></span>
+    </div>
+</div>
+
+
+<script>
+  var no = 0;
+
+  mapboxgl.accessToken = 'pk.eyJ1IjoibGljaGFvNjciLCJhIjoiY2pyNjJ0Y2t5MHoxMTQzbjV2MjM2NHpobiJ9.slrSVXTCzoDoAWEjBGbv8A';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v9',
+    center: [121.28924406376268, 30.224097776570517],
+    zoom: 11
+  });
+
+  function addLanyer() {
+    fetch(`/data/${no}`).then(function (res) {
+      res.json().then(function (data) {
+        document.getElementById('data').innerHTML = JSON.stringify(data);
+      });
+    });
+
+    map.addSource(`radar-${no}`, {
+      type: "image",
+      url: `http://localhost:3333/image/${no}`,
+      coordinates: [
+        [121.18044999200744, 30.26365],
+        [121.41751447339416, 30.26365],
+        [121.41751447339416, 30.1689],
+        [121.18044999200744, 30.1689]
+      ]
+    });
+
+    map.addLayer({
+      id: `radar-layer-${no}`,
+      "type": "raster",
+      "source": `radar-${no}`,
+      "paint": {
+        "raster-fade-duration": 0
+      }
+    });
+    no = no + 1;
+  }
+
+
+  map.on('load', function () {
+
+    fetch(`/data/${no}`).then(function (res) {
+      res.json().then(function (data) {
+        document.getElementById('data').innerHTML = JSON.stringify(data);
+        addLanyer();
+        setInterval(() => {
+          map.removeLayer(`radar-layer-${no - 1}`);
+          map.removeSource(`radar-${no - 1}`);
+          addLanyer()
+        }, 5 * 1000)
+      });
+    })
+
+
+  });
+
+
+  map.on('click', function (e) {
+    document.getElementById('info').innerHTML =       /* innerHTML 属性设置或返回表格行的开始和结束标签之间的 HTML  */
+      // e.point is the x, y coordinates of the mousemove event relative
+      // to the top-left corner of the map
+      JSON.stringify(e.point) + '<br />' +
+      // e.lngLat is the longitude, latitude geographical position of the event
+      JSON.stringify(e.lngLat);  /* JSON.stringify() 方法可以将任意的 JavaScript 值序列化成 JSON 字符串 */
+  });
+
+</script>
+
+
+</body>
+</html>

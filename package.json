@@ -1,0 +1,27 @@
+{
+  "name": "mapd-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Acceptedlc/mapd-tutorial.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Acceptedlc/mapd-tutorial/issues"
+  },
+  "homepage": "https://github.com/Acceptedlc/mapd-tutorial#readme",
+  "dependencies": {
+    "csv": "^5.1.1",
+    "csv-reader": "^1.0.3",
+    "event-stream": "^4.0.1",
+    "express": "^4.16.4",
+    "mapd-connector": "^1.0.0",
+    "moment": "^2.24.0"
+  }
+}

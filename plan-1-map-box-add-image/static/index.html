@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Server Render Plan One</title>
+    <script src='http://temp-lichao.oss-cn-beijing.aliyuncs.com/mapbox-gl.js'></script>
+    <link href='http://temp-lichao.oss-cn-beijing.aliyuncs.com/mapbox-gl.css' rel='stylesheet' />
+</head>
+<body>
+
+<div id='map' style='width: 1024px; height: 680px;'></div>
+<span id="info" style="position:absolute; left:0; bottom:0">文本</span>
+
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoibGljaGFvNjciLCJhIjoiY2pyNjJ0Y2t5MHoxMTQzbjV2MjM2NHpobiJ9.slrSVXTCzoDoAWEjBGbv8A';
+
+
+
+
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v9',
+    center: [116.3966, 39.906],
+    zoom: 10
+  });
+
+  map.on('load', function() {
+    map.addSource("radar", {
+      type: "image",
+      url: "http://localhost:9080/test.png",
+      coordinates: [
+        [116.20, 40.01],
+        [116.61, 40.01],
+        [116.61, 39.80],
+        [116.20, 39.80]
+      ]
+    });
+
+    map.addLayer({
+      id: "radar-layer",
+      "type": "raster",
+      "source": "radar",
+      "paint": {
+        "raster-fade-duration": 0
+      }
+    });
+  });
+
+
+  map.on('click', function (e) {
+    document.getElementById('info').innerHTML =       /* innerHTML 属性设置或返回表格行的开始和结束标签之间的 HTML  */
+      // e.point is the x, y coordinates of the mousemove event relative
+      // to the top-left corner of the map
+      JSON.stringify(e.point) + '<br />' +
+      // e.lngLat is the longitude, latitude geographical position of the event
+      JSON.stringify(e.lngLat);  /* JSON.stringify() 方法可以将任意的 JavaScript 值序列化成 JSON 字符串 */
+  });
+
+</script>
+
+</body>
+</html>

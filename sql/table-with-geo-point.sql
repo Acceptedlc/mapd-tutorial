@@ -1,0 +1,4 @@
+CREATE TABLE poi (
+    pt GEOMETRY(POINT, 4326) ENCODING NONE,
+    record_time TIMESTAMP
+);
