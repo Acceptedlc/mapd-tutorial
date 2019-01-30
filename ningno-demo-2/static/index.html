@@ -2,9 +2,133 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Ning Bo Demo2</title>
+
+    <script src='http://temp-lichao.oss-cn-beijing.aliyuncs.com/mapbox-gl.js'></script>
+    <link href='http://temp-lichao.oss-cn-beijing.aliyuncs.com/mapbox-gl.css' rel='stylesheet'/>
+
+
+    <style>
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .up {
+            width: 100%;
+            float: left;
+        }
+
+        .down {
+            width: 100%;
+            float: right;
+            background: yellowgreen;
+        }
+
+        .map {
+            width: 100%;
+            height: 900px;
+        }
+
+    </style>
+
 </head>
-<body>
+
+
+<body style="margin: 0;padding: 0">
+
+<div class="container">
+    <div class="up">
+        <div id="map" class="map"></div>
+    </div>
+    <div class="down">
+        <span id="data" style="position:absolute; left:0; up:0">0</span>
+        <span id="info" style="position:absolute; left:0; bottom:0"></span>
+    </div>
+</div>
+
+
+<script>
+  let no = 1;
+  mapboxgl.accessToken = 'pk.eyJ1IjoibGljaGFvNjciLCJhIjoiY2pyNjJ0Y2t5MHoxMTQzbjV2MjM2NHpobiJ9.slrSVXTCzoDoAWEjBGbv8A';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/dark-v9',
+    center: [121.35744913310032, 30.23705016762733],
+    zoom: 13
+  });
+
+  map.on('load', function () {
+
+    map.addSource(`tile-source-all`, {
+      type: "raster",
+      tiles: [`http://192.168.2.47:3334/image-all/{z}/{x}/{y}`],
+      tileSize: 256
+    });
+
+
+    map.addSource(`tile-source-part`, {
+      type: "raster",
+      tiles: [`http://192.168.2.47:3334/image/{z}/{x}/{y}?no=0`],
+      tileSize: 256
+    });
+
+    map.addLayer({
+      id: `tile-layer-all`,
+      type: 'raster',
+      source: 'tile-source-all',
+      minzoom: 0,
+      maxzoom: 22
+    });
+
+
+    map.addLayer({
+      id: `tile-layer-part`,
+      type: 'raster',
+      source: 'tile-source-part',
+      minzoom: 0,
+      maxzoom: 22
+    });
+
+
+    setInterval(() => {
+      map.removeLayer(`tile-layer-part`);
+      map.removeSource(`tile-source-part`);
+
+      document.getElementById('data').innerHTML = no;
+      map.addSource(`tile-source-part`, {
+        type: "raster",
+        tiles: [`http://192.168.2.47:3334/image/{z}/{x}/{y}?no=${no++}`],
+        tileSize: 256
+      });
+
+      map.addLayer({
+        id: `tile-layer-part`,
+        type: 'raster',
+        source: 'tile-source-part',
+        minzoom: 0,
+        maxzoom: 22
+      });
+
+
+    }, 10 * 1000);
+
+
+  });
+
+
+  map.on('click', function (e) {
+    document.getElementById('info').innerHTML =       /* innerHTML 属性设置或返回表格行的开始和结束标签之间的 HTML  */
+      // e.point is the x, y coordinates of the mousemove event relative
+      // to the top-left corner of the map
+      JSON.stringify(e.point) + '<br />' +
+      // e.lngLat is the longitude, latitude geographical position of the event
+      JSON.stringify(e.lngLat);  /* JSON.stringify() 方法可以将任意的 JavaScript 值序列化成 JSON 字符串 */
+  });
+
+</script>
+
 
 </body>
 </html>
