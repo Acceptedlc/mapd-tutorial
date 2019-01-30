@@ -13,7 +13,11 @@ connector
   .user("mapd")
   .password("HyperInteractive")
   .connect((err, con) => {
-
+    if(err) {
+      console.log(err);
+      process.exit(1)
+    }
+    console.log("connect mapd success");
 
     let query = "INSERT INTO logs VALUES ('1548822549', '\"{\\\"@timestamp\\\":\\\"2019-01-30T04:09:19.585Z\\\",\\\"@metadata\\\":{\\\"beat\\\":\\\"filebeat\\\",\\\"type\\\":\\\"doc\\\",\\\"version\\\":\\\"6.4.0\\\",\\\"topic\\\":\\\"iot-prod\\\"},\\\"beat\\\":{\\\"hostname\\\":\\\"daemonset-node-filebeat-6sv87\\\",\\\"version\\\":\\\"6.4.0\\\",\\\"name\\\":\\\"daemonset-node-filebeat-6sv87\\\"},\\\"host\\\":{\\\"name\\\":\\\"daemonset-node-filebeat-6sv87\\\"},\\\"message\\\":\\\"+ 2019-01-30T04:09:19.584Z  info \\\u003ckafka-consumer\\\u003e - | Message of topic ns-anylasis-production consumed within 15 ms, msgId: 5c51236f23e430000aa7a44e\\\",\\\"kubernetes-env\\\":\\\"iot-prod\\\",\\\"kubernetes\\\":{\\\"namespace\\\":\\\"alpha\\\",\\\"replicaset\\\":{},\\\"labels\\\":{\\\"app\\\":\\\"alpha-cloud-api\\\"},\\\"pod\\\":{\\\"name\\\":\\\"alpha-cloud-api-5bcc958f5b-5mjnz\\\"},\\\"node\\\":{\\\"name\\\":\\\"iot-prod-kubernetes-node-15\\\"},\\\"container\\\":{\\\"name\\\":\\\"alpha-cloud-api\\\"}}}\"');";
     let options = {};
