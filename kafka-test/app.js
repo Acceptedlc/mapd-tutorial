@@ -43,8 +43,12 @@ connector
 consumerGroup.on('connect', function () {
   console.log("connect success");
   consumerGroup.on('message', function (message) {
-    connector.query(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${message.value}');`, {}, function (err, result) {
-
+    connector.query(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${JSON.stringify(message.value)}');`, {}, function (err, result) {
+        if(err) {
+          console.log(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${JSON.stringify(message.value)}');`);
+          console.log(err);
+          process.exit(1);
+        }
     });
   });
 
