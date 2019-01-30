@@ -1,4 +1,4 @@
-const Connector = require("/Users/chaoli/Desktop/sensoro/mapd-connector/dist/node-connector.js");
+const Connector = require("../node-connector.js");
 // const Connector = require("mapd-connector");
 
 
