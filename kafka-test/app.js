@@ -29,6 +29,8 @@ var options = {
 
 var consumerGroup = new kafka.ConsumerGroup(options, 'iot-prod');
 const Connector = require("../node-connector.js");
+
+const connector = new Connector();
 connector
   .protocol("http")
   .host('172.16.1.2')
