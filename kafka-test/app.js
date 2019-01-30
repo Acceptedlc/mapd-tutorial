@@ -38,11 +38,10 @@ connector
   .password("HyperInteractive")
 
 
-let options = {};
 consumerGroup.on('connect', function () {
   console.log("connect success");
   consumerGroup.on('message', function (message) {
-    connector.query(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${message.value}');`, options, function (err, result) {
+    connector.query(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${message.value}');`, {}, function (err, result) {
 
     });
   });
