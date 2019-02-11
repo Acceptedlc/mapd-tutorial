@@ -1,4 +1,4 @@
-const {Consumer} = require('@sensoro/libkafka');
+const {ConsumerGroupPipeline} = require('kafka-pipeline');
 const Connector = require("../node-connector.js");
 
 
