@@ -24,6 +24,7 @@
     "event-stream": "^4.0.1",
     "express": "^4.16.4",
     "kafka-node": "^4.0.0",
+    "kafka-pipeline": "^1.0.1",
     "mapd-connector": "^1.0.0",
     "moment": "^2.24.0"
   }

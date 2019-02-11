@@ -31,6 +31,9 @@ connector
         console.log("recieve message");
         let info = JSON.parse(message.value);
         let log = info.message.split('\n').map(e => e.split('|')[1]).join('').replace(/\'/g,`"`);
+
+        // await new Promise()
+
         con.query(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${log}');`, {}, function (err, result) {
           if(err) {
             console.log(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${JSON.stringify(message.value)}');`);

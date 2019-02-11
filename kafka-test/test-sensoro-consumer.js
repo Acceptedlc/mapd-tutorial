@@ -8,20 +8,24 @@ const consumer = new Consumer({
   topic: 'iot-prod',
 
   // 消费3秒不结束认为超时，可选
-  consumeTimeout: 3000,
+  consumeTimeout: 1000 * 30,
 
   // 最多并发消费16条，可选
   maxConsumeConcurrency: 16,
 
+  minCommitInterval: 10000,
 
   // 消息处理回调函数
   messageConsumer: async (message) => {
-    console.log(message);
+    await new Promise(suc => setTimeout(() => {
+      console.log("kkkkkk");
+      suc();
+    }, 10000));
   },
   // 可选的消费失败的消息处理函数, 当 messageConsumer 发生异常或消费超时时调用
   failedMessageConsumer: async (error, message) => {
     console.error(error);
-    await FailedMessage.insert(message);
+    // await FailedMessage.insert(message);
   }
 });
 consumer.listen(); // 返回一个Promise，将一直阻塞直至close()方法被调用
