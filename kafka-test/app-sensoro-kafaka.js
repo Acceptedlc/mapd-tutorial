@@ -11,6 +11,7 @@ connector
   .user("mapd")
   .password("HyperInteractive")
   .connect((err, con) => {
+    console.log("connect mapd success");
     const consumer = new Consumer({
       kafkaHost: '172.22.6.7:9092',
       // or you can specify a zookeeperUri
@@ -27,6 +28,7 @@ connector
 
       // 消息处理回调函数
       messageConsumer: async (message) => {
+        console.log("recieve message");
         let info = JSON.parse(message.value);
         let log = info.message.split('\n').map(e => e.split('|')[1]).join('').replace(/\'/g,`"`);
         con.query(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${log}');`, {}, function (err, result) {
