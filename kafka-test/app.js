@@ -15,7 +15,7 @@ connector
     const consumerPipeline = new ConsumerGroupPipeline({
       topic: 'iot-prod',
       messageConsumer: async (message) => {
-        console.log("recv msg", index);
+        console.log("recv msg", index++);
         await new Promise(suc => {
           let info = JSON.parse(message.value);
           let log = info.message.split('\n').map(e => e.split('|')[1]).join('').replace(/\'/g, `"`);
