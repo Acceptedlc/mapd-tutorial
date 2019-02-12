@@ -1,7 +1,7 @@
 const {Consumer} = require('@sensoro/libkafka');
 const Connector = require("../node-connector.js");
 
-
+let index = 1;
 const connector = new Connector();
 connector
   .protocol("http")
@@ -28,7 +28,7 @@ connector
 
       // 消息处理回调函数
       messageConsumer: async (message) => {
-        console.log("recieve message");
+        console.log("recieve message", index++);
         let info = JSON.parse(message.value);
         let log = info.message.split('\n').map(e => e.split('|')[1]).join('').replace(/\'/g, `"`).substr(0, 100);
 
