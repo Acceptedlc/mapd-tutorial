@@ -30,12 +30,12 @@ connector
       messageConsumer: async (message) => {
         console.log("recieve message");
         let info = JSON.parse(message.value);
-        let log = info.message.split('\n').map(e => e.split('|')[1]).join('').replace(/\'/g,`"`);
+        let log = info.message.split('\n').map(e => e.split('|')[1]).join('').replace(/\'/g, `"`).substr(0, 100);
 
         // await new Promise()
 
         con.query(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${log}');`, {}, function (err, result) {
-          if(err) {
+          if (err) {
             console.log(`INSERT INTO logs VALUES ('${Math.floor(Date.now() / 1000)}', '${JSON.stringify(message.value)}');`);
             console.log(err);
             process.exit(1);
